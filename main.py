@@ -1,6 +1,4 @@
 import random
-import numpy as np
-from typing import List, Tuple
 from tabulate import tabulate
 
 class BB84Simulation:
@@ -25,6 +23,18 @@ class BB84Simulation:
         self.bob_bases = [random.choice(['↕', '↗']) for _ in range(self.n_bits)]
         if self.include_eve:
             self.eve_bases = [random.choice(['↕', '↗']) for _ in range(self.n_bits)]
+        
+    def simulate_eve_interception(self) -> None:
+        if not self.include_eve:
+            return
+            
+        for i in range(self.n_bits):
+            if self.eve_bases[i] == self.alice_bases[i]:
+                # If Eve's basis matches Alice's, she gets the correct bit
+                self.eve_results.append(self.alice_bits[i])
+            else:
+                # If bases don't match, Eve gets a random bit
+                self.eve_results.append(random.randint(0, 1))
                 
     def simulate_bob_measurements(self) -> None:
         for i in range(self.n_bits):
@@ -46,6 +56,25 @@ class BB84Simulation:
             if self.alice_bases[i] == self.bob_bases[i]:
                 self.matching_bases.append(i)
                 self.final_key.append(self.alice_bits[i])
+                
+    def check_eve_detection(self) -> None:
+        if not self.include_eve:
+            return
+            
+        matching_bit_count = 0 # Count of bits that matched where bases matched
+        total_matches = 0 # Total number of matching bases
+        
+        for i in range(self.n_bits):
+            if self.alice_bases[i] == self.bob_bases[i]: # If bases matched
+                total_matches += 1
+                if self.alice_bits[i] == self.bob_results[i]: # If bits matched
+                    matching_bit_count += 1
+                    
+        # Calculate error rate between matching bits and total matches
+        # Bob and Alice have a 50% chance of getting the same bit if they use the same basis
+        # So if Bob gets a bit that doesn't match Alice's (50% chance in big numbers), it's because Eve intercepted the bit
+        error_rate = 1 - (matching_bit_count / total_matches) if total_matches > 0 else 0
+        self.eve_detected = error_rate > 0.25  # Assuming 25% error rate threshold
                 
     def print_results(self) -> None:
         print("\nBB84 Protocol Simulation Results:")
@@ -104,12 +133,16 @@ class BB84Simulation:
     def run_simulation(self) -> None:
         self.generate_alice_bits()
         self.generate_bases()
+        if self.include_eve:
+            self.simulate_eve_interception()
         self.simulate_bob_measurements()
         self.generate_final_key()
+        if self.include_eve:
+            self.check_eve_detection()
         self.print_results()
 
 # Example usage
 if __name__ == "__main__":
     # Simulate BB84 protocol with 20 bits and Eve's interception
-    simulation = BB84Simulation(20, include_eve=False)
+    simulation = BB84Simulation(20, include_eve=True)
     simulation.run_simulation()
