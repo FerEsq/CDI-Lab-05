@@ -1,3 +1,8 @@
+# BB84 Simulation
+# This is a simulation of the BB84 protocol, which is a quantum key distribution protocol.
+# Andrés Estuardo Montoya Wilhelm - 21552
+# Fernanda Esquivel de León - 21542 
+
 import random
 from tabulate import tabulate
 
@@ -16,15 +21,20 @@ class BB84Simulation:
         self.eve_detected = False
         
     def generate_alice_bits(self) -> None:
+        # Generate random bits for Alice
         self.alice_bits = [random.randint(0, 1) for _ in range(self.n_bits)]
         
     def generate_bases(self) -> None:
+        # Generate bases for Alice and Bob
         self.alice_bases = [random.choice(['↕', '↗']) for _ in range(self.n_bits)]
+        # Generate bases for Bob
         self.bob_bases = [random.choice(['↕', '↗']) for _ in range(self.n_bits)]
+        # If Eve is included, generate bases for Eve
         if self.include_eve:
             self.eve_bases = [random.choice(['↕', '↗']) for _ in range(self.n_bits)]
         
     def simulate_eve_interception(self) -> None:
+        # If Eve is not included, do nothing
         if not self.include_eve:
             return
             
@@ -37,6 +47,7 @@ class BB84Simulation:
                 self.eve_results.append(random.randint(0, 1))
                 
     def simulate_bob_measurements(self) -> None:
+        # Simulate Bob's measurements
         for i in range(self.n_bits):
             if self.include_eve:
                 # If Eve intercepted, Bob's measurement is based on Eve's result
@@ -52,10 +63,11 @@ class BB84Simulation:
                     self.bob_results.append(random.randint(0, 1))
                 
     def generate_final_key(self) -> None:
+        # Generate the final key by only using the bits where bases matched
         for i in range(self.n_bits):
-            if self.alice_bases[i] == self.bob_bases[i]:
-                self.matching_bases.append(i)
-                self.final_key.append(self.alice_bits[i])
+            if self.alice_bases[i] == self.bob_bases[i]: # If bases matched
+                self.matching_bases.append(i) # Add the index to the matching bases
+                self.final_key.append(self.alice_bits[i]) # Add the bit to the final key
                 
     def check_eve_detection(self) -> None:
         if not self.include_eve:
