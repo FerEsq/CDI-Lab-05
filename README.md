@@ -35,8 +35,21 @@ Las principales dependencias del proyecto incluyen:
 * [![GitHub][GitHub]][GitHub-monti]
 
 
-## 💻 Explicación interactiva
-Puedes acceder a la explicación interactiva del código [aquí](#).
+## 💻 Explicación interactiva ([visuals](https://github.com/FerEsq/CDI-Lab-05/tree/main/visuals))
+### Video
+Se realizó un video en formato vertical (ideal para plataformas como TikTok, YouTube Shorts o Instagram Reels) que explica los conceptos:
+* Criptografía 
+* Criptografía Cuántica
+* Protocolo BB84
+  * Explicación del funcionamiento
+  * Explicación de la implementación en código
+  * Explicación de los resultados del código
+  
+Puedes acceder al video [aquí](https://github.com/FerEsq/CDI-Lab-05/blob/main/visuals/video.mp4).
+
+### Slides
+Se realizó una serie de slides informativas (ideales para publicar en Instagram) que explican que es el protocolo BB84 y cómo funciona.
+Puedes acceder a las slides [aquí](https://github.com/FerEsq/CDI-Lab-05/tree/main/visuals/slides).
 
 <!-- MARKDOWN LINKS & IMAGES -->
 [Python]: https://img.shields.io/badge/Python-4B8BBE?style=for-the-badge&logo=python&logoColor=white
