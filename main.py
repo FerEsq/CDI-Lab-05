@@ -84,7 +84,8 @@ class BB84Simulation:
                     
         # Calculate error rate between matching bits and total matches
         # Bob and Alice have a 50% chance of getting the same bit if they use the same basis
-        # So if Bob gets a bit that doesn't match Alice's (50% chance in big numbers), it's because Eve intercepted the bit
+        # So if Bob gets a bit that doesn't match Alice's (50% chance in big numbers), 
+        # it's because Eve intercepted the bit
         error_rate = 1 - (matching_bit_count / total_matches) if total_matches > 0 else 0
         self.eve_detected = error_rate > 0.25  # Assuming 25% error rate threshold
                 
